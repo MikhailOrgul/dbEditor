@@ -1,6 +1,6 @@
 import CreateTableRow from './rowForCreateTable'
 
-const TableForCols = () => {
+const TableForCols = ({ rows, onDelete }) => {
     return (
         <div>
             <table style={{ borderCollapse: 'collapse', width:'100%' }}>
@@ -24,7 +24,9 @@ const TableForCols = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <CreateTableRow />
+                    {rows.map((row) => (
+                        <CreateTableRow key={row.id} onDelete={() => onDelete(row.id)}/>
+                    ))}
                 </tbody>
             </table>
         </div>

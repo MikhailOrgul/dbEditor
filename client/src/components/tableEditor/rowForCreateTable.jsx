@@ -1,4 +1,4 @@
-const CreateTableRow = () => {
+const CreateTableRow = ({ onDelete }) => {
     return(
         <tr>
             <td>
@@ -19,7 +19,7 @@ const CreateTableRow = () => {
                 <input type="checkbox" name="isUnique"/>
             </td>
             <td>
-                <button style={{color: 'red'}}>X</button>
+                <button onClick={onDelete} style={{color: 'red'}}>X</button>
             </td>
         </tr>
     )

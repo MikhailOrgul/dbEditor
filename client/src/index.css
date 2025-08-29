@@ -28,7 +28,9 @@ body {
     min-width: 320px;
     min-height: 100vh;
 }
-
+input {
+   border: 0.2em solid #a78f8f;     
+}
 button {
     border-radius: 8px;
     border: 1px solid transparent;
@@ -39,6 +41,7 @@ button {
     background-color: #1a1a1a;
     cursor: pointer;
     transition: border-color 0.25s;
+    border: 0.2em solid #888080;
 }
 button:hover {
     border-color: #646cff;      

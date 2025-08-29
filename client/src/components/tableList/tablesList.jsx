@@ -2,7 +2,7 @@ import TableItem from '../tableList/tableItem'
 import { useState, useEffect } from 'react'
 
 
-const TablesList = ({ onChangeHeader }) => {
+const TablesList = ({ onChangeHeader, onChangeIsCreateNewTable }) => {
     const [tables, setTables] = useState([])
     
     useEffect(() => {
@@ -12,14 +12,24 @@ const TablesList = ({ onChangeHeader }) => {
     }, [])
 
     return(
-        <div>
+        <div style={{ textAlign: 'center' }}>
             <h1>
                 Список таблиц
             </h1>
+
             {tables.map((table, i) => (
                 <TableItem key={i} table={table.table_name} />
             ))}
-            <button onClick={() => onChangeHeader('Создание таблицы')}>Создать новую таблицу</button>
+
+            <button 
+                onClick={() => { 
+                    onChangeHeader('Создание таблицы'); 
+                    onChangeIsCreateNewTable(true) 
+                }} 
+                style={{ 
+                    marginTop: '2%' 
+                }}
+            >Создать новую таблицу</button>
         </div>
     )
 }

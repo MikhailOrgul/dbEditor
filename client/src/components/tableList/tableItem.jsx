@@ -1,6 +1,6 @@
 const TableItem = (props) => {
     return (
-        <p>{props.table}</p>
+        <li>{props.table}</li>
     )
 }
 
