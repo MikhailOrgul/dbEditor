@@ -1,0 +1,29 @@
+{
+  "name": "dbeditor",
+  "version": "1.0.0",
+  "description": "Тестовое задание ",
+  "main": "main.js",
+  "scripts": {
+    "start": "concurrently \"cd client && npm run dev\" \"npm run electron\"",
+    "electron": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MikhailOrgul/dbEditor.git"
+  },
+  "author": "Farnosov Mikhail",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MikhailOrgul/dbEditor/issues"
+  },
+  "homepage": "https://github.com/MikhailOrgul/dbEditor#readme",
+  "devDependencies": {
+    "electron": "^37.3.1"
+  },
+  "dependencies": {
+    "concurrently": "^9.2.1",
+    "dotenv": "^17.2.1",
+    "pg": "^8.16.3"
+  }
+}
