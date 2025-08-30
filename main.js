@@ -23,10 +23,8 @@ app.whenReady().then(() => {
 })
 
 ipcMain.handle('getTables', controllers.handleGetAllTables)
-ipcMain.handle('createTable', controllers.handleCreateTable)
-ipcMain.handle('alterTable', controllers.handleAlterTable)
-ipcMain.handle('dropTable', controllers.handlerDropTable)
 ipcMain.handle('getDataFromTable', controllers.handlerGetTableValues)
+ipcMain.handle('getDataFromClientForm', controllers.handlerSaveTable)
 
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin'){

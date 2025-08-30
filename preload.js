@@ -9,8 +9,6 @@ contextBridge.exposeInMainWorld('versions', {
 
 contextBridge.exposeInMainWorld('api', {
     getTables: () => ipcRenderer.invoke('getTables'),
-    createTable: (tableName, cols, primeryKeyCol) => ipcRenderer.invoke('createTable', {tableName, cols, primeryKeyCol}),
-    alterTable: (tableName, colName, dataType, method) => ipcRenderer.invoke('alterTable', {tableName, colName, dataType, method}),
-    dropTable: (tableName) => ipcRenderer.invoke('dropTable', {tableName}),
-    getDataFromTable: (tableName) => ipcRenderer.invoke('getDataFromTable', tableName)
+    getDataFromTable: (tableName) => ipcRenderer.invoke('getDataFromTable', tableName),
+    getDataFromClientForm: (tableName, columns) => ipcRenderer.invoke('getDataFromClientForm', {tableName, columns})
 })

@@ -11,45 +11,7 @@ const getAllTables = async () => {
     return query.rows
 }
 
-//Создане таблицы
-const createTable = async (dataObj) => {
-    const query = (`
-        CREATE TABLE ${dataObj.tableName} (
-            ${dataObj.cols}
-            PRIMARY KEY (${dataObj.primaryKeyCol})
-        )
-    `)
-
-    try{
-        await pool.query(query)
-    } catch(err) {
-        console.error('[ERROR] создание таблицы', err)
-    }
-    
-}
-
-//Изменение таблицы
-const alterTableColumns = async (dataObj) => {
-    const query = `
-        ALTER TABLE ${dataObj.tableName} ${dataObj.method} ${dataObj.col} ${dataObj.dataType}
-    `
-    try{
-        await pool.query(query)
-    } catch (err) {
-        console.error('[ERROR] изменение таблицы', err)
-    }
-}
-
-//Удаление таблицы
-const dropTable = async (tableName) => {
-    const query = `DROP TABLE ${tableName}`
-    try{
-        await pool.query(query)
-    } catch (err) {
-        console.error('[ERROR] удаление таблицы', err)
-    }
-}
-
+//Данные о полях таблицы
 const getTableValues = async (tableName) => {
     const query = `
         SELECT 
@@ -88,17 +50,58 @@ const getTableValues = async (tableName) => {
     `
     try{
         const result = await pool.query(query)
+        
+        result.rows.map((i) => {
+            if(i.is_nullable === 'NO'){
+                i.is_nullable = false
+            } else if(i.is_nullable === 'YES') {
+                i.is_nullable = true
+            }
+        })
+
         return result.rows
     } catch (err) {
         console.error('[ERROR] получение данных из таблицы', err)
     }
 }
 
+const saveTable = async (dataObj) => {
+    const generateQuerySQL = async () => {
+        const { tableName, columns } = dataObj
+        let columnsSQL = columns.map(column => {
+            let columnParams = `"${column.column_name}" ${column.data_type.toUpperCase()} `
+
+            if(!column.is_nullable) columnParams += ' NOT NULL'
+            if(column.unique) columnParams += ' UNIQUE'
+
+            return columnParams
+        })
+        
+        let columnsPK = columns.filter(column => column.primary_key).map(column => `"${column.column_name}"`)
+        if (columnsPK.length) columnsSQL.push(`PRIMARY KEY (${columnsPK.join(', ')})`)
+
+        const query = `CREATE TABLE "${tableName}" \n(${columnsSQL});`
+        return query
+    }   
+
+    generateQuerySQL()
+    
+    const dropTable = async () => {
+        const query = `DROP TABLE IF EXISTS "${dataObj.tableName}" CASCADE;`
+        console.log(query)
+        const sqlDrop = await pool.query(query)
+        return sqlDrop        
+    }
+    try{
+        await dropTable()
+        await pool.query(await generateQuerySQL())
+    } catch (err) {
+        console.error(err)
+    }
+}
+
 module.exports ={ 
     getAllTables, 
-    createTable, 
-    alterTableColumns, 
-    dropTable,
+    saveTable,
     getTableValues,
-    
 }

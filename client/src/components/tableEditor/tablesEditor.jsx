@@ -6,7 +6,7 @@ const TablesEditor = (
         onChangeHeader, 
         isCreateNewTable, 
         onChangeIsCreateNewTable,
-        pickedTable,
+        setPickedTable,
         tableColumns,
         isEditTable, 
         setIsEditTable,
@@ -28,6 +28,7 @@ const TablesEditor = (
             </h1>
             { (isCreateNewTable || isEditTable) &&  
                 <CreateTableForm
+                    setPickedTable={setPickedTable}
                     setTableColumns={setTableColumns} 
                     setIsEditTable={setIsEditTable}
                     onChangeHeader={onChangeHeader} 

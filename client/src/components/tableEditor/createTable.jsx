@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
 import TableForCols from "./tableForCreating"
 
-const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable, tableColumns, setIsEditTable, setTableColumns }) => {
-    const [rows, setRows] = useState([{ id: 1 }])
-    
+const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable, tableColumns, setIsEditTable, setTableColumns, setPickedTable }) => {
+    const [rows, setRows] = useState([{ id: 1, column_name: "", data_type: "", is_nullable: false, primary_key: false, unique: false}])
+    const [tableName, setTableName] = useState('')
+
     useEffect(() => {
         if (tableColumns && tableColumns.length > 0) {
             setRows(tableColumns)
@@ -29,10 +30,18 @@ const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable, tableColumn
         setTableColumns()
     }
 
+    const handleSaveTable = () => {      
+        window.api.getDataFromClientForm(tableName, rows)
+            .then()
+            .catch(err => console.error('[ERROR]', err.message))
+    }
+
     return (
         <div style={{ paddingLeft: '2%', paddingRight: '3%', display: 'flex', flexDirection: "column" }}>
             <input 
                 placeholder="Имя таблицы" 
+                value={tableName}
+                onChange={e => setTableName(e.target.value)}
                 style={{ 
                     marginBottom: '1%',
                     textAlign: 'center',
@@ -54,6 +63,7 @@ const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable, tableColumn
                 }>
                     <button 
                         style={{ width: '30%' }}
+                        onClick={() => {handleSaveTable; setPickedTable(null)}}
                     >Сохранить таблицу</button>
 
                     <button 

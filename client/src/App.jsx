@@ -10,11 +10,8 @@ function App() {
     const [pickedTable, setPickedTable] = useState(null)
     const [tableColumns, setTableColumns] = useState()
 
-    console.log(pickedTable)
-
     useEffect(() => {
         if (!pickedTable) return;
-        console.log('[INFO] pickedTabl.table_name', pickedTable.table_name)
 
         window.api.getDataFromTable(pickedTable.table_name)
             .then(data => {
@@ -33,6 +30,7 @@ function App() {
             />
             
             <TablesEditor
+                setPickedTable={setPickedTable}
                 setTableColumns={setTableColumns} 
                 header={tableEditorHeader} 
                 onChangeHeader={setTableEditorHeader} 

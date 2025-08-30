@@ -29,7 +29,7 @@ const CreateTableRow = ({ onDelete, row, onChange }) => {
             <td>
                 <input 
                     type="checkbox" 
-                    checked={row.is_nullable === 'NO'}
+                    checked={row.is_nullable ?? false}
                     onChange={e => handleInputChange("is_nullable", e.target.checked)}
                 />
             </td>
