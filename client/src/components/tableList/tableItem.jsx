@@ -1,6 +1,6 @@
-const TableItem = (props) => {
+const TableItem = ({ table, setPickedTable, header, setIsEditTable }) => {
     return (
-        <li>{props.table}</li>
+        <li onClick={() => { setIsEditTable(true), setPickedTable({...table}); header(`Изменение таблицы ${table.table_name}`) }}>{table.table_name}</li>
     )
 }
 

@@ -1,8 +1,7 @@
 import TableItem from '../tableList/tableItem'
 import { useState, useEffect } from 'react'
 
-
-const TablesList = ({ onChangeHeader, onChangeIsCreateNewTable }) => {
+const TablesList = ({ onChangeHeader, onChangeIsCreateNewTable, setPickedTable, setIsEditTable }) => {
     const [tables, setTables] = useState([])
     
     useEffect(() => {
@@ -12,13 +11,13 @@ const TablesList = ({ onChangeHeader, onChangeIsCreateNewTable }) => {
     }, [])
 
     return(
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', width: '20%' }}>
             <h1>
                 Список таблиц
-            </h1>
+            </h1>   
 
             {tables.map((table, i) => (
-                <TableItem key={i} table={table.table_name} />
+                <TableItem key={i} table={table} setPickedTable={setPickedTable} header={onChangeHeader} setIsEditTable={setIsEditTable}/>
             ))}
 
             <button 

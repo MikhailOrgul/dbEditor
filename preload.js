@@ -11,5 +11,6 @@ contextBridge.exposeInMainWorld('api', {
     getTables: () => ipcRenderer.invoke('getTables'),
     createTable: (tableName, cols, primeryKeyCol) => ipcRenderer.invoke('createTable', {tableName, cols, primeryKeyCol}),
     alterTable: (tableName, colName, dataType, method) => ipcRenderer.invoke('alterTable', {tableName, colName, dataType, method}),
-    dropTable: (tableName) => ipcRenderer.invoke('dropTable', {tableName})
+    dropTable: (tableName) => ipcRenderer.invoke('dropTable', {tableName}),
+    getDataFromTable: (tableName) => ipcRenderer.invoke('getDataFromTable', tableName)
 })

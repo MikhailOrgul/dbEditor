@@ -50,9 +50,55 @@ const dropTable = async (tableName) => {
     }
 }
 
+const getTableValues = async (tableName) => {
+    const query = `
+        SELECT 
+            c.column_name,
+            c.ordinal_position AS id,
+            c.data_type,
+            c.is_nullable,
+        CASE 
+            WHEN pk_tc.constraint_type = 'PRIMARY KEY' THEN true
+            ELSE false
+        END AS primary_key,
+        CASE 
+            WHEN uq_tc.constraint_type = 'UNIQUE' THEN true
+            ELSE false
+        END AS unique
+        FROM information_schema.columns c
+        LEFT JOIN information_schema.key_column_usage pk_kcu
+            ON c.table_name = pk_kcu.table_name
+            AND c.column_name = pk_kcu.column_name
+            AND c.table_schema = pk_kcu.table_schema
+        LEFT JOIN information_schema.table_constraints pk_tc
+            ON pk_kcu.constraint_name = pk_tc.constraint_name
+            AND pk_tc.constraint_type = 'PRIMARY KEY'
+            AND c.table_schema = pk_tc.table_schema
+        LEFT JOIN information_schema.key_column_usage uq_kcu
+            ON c.table_name = uq_kcu.table_name
+            AND c.column_name = uq_kcu.column_name
+            AND c.table_schema = uq_kcu.table_schema
+        LEFT JOIN information_schema.table_constraints uq_tc
+            ON uq_kcu.constraint_name = uq_tc.constraint_name
+            AND uq_tc.constraint_type = 'UNIQUE'
+            AND c.table_schema = uq_tc.table_schema
+        WHERE c.table_name = '${tableName}'
+        AND c.table_schema = 'public'
+        ORDER BY c.ordinal_position;
+    `
+    try{
+        const result = await pool.query(query)
+        return result.rows
+    } catch (err) {
+        console.error('[ERROR] получение данных из таблицы', err)
+    }
+}
+
 module.exports ={ 
     getAllTables, 
     createTable, 
     alterTableColumns, 
-    dropTable, 
+    dropTable,
+    getTableValues,
+    
 }

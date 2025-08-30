@@ -1,18 +1,32 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import TableForCols from "./tableForCreating"
 
-const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable }) => {
+const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable, tableColumns, setIsEditTable, setTableColumns }) => {
     const [rows, setRows] = useState([{ id: 1 }])
+    
+    useEffect(() => {
+        if (tableColumns && tableColumns.length > 0) {
+            setRows(tableColumns)
+        }
+    }, [tableColumns])
 
     const addRow = () => {
         const lastID = rows.length > 0 ? rows.at(-1).id+1 : 1
-        console.log(lastID)
+        console.log('[addRow]', lastID)
         setRows([...rows, { id: lastID }])
     }
 
     const deleteRow = (id) => {
         console.log('[deleteRow]', id)
         setRows(rows.filter(row => row.id != id))
+    }
+
+    const handleCancel =() => {
+        setIsEditTable(false)
+        onChangeIsCreateNewTable(false);
+        onChangeHeader('Окно редактирования')
+        setRows([])
+        setTableColumns()
     }
 
     return (
@@ -27,6 +41,7 @@ const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable }) => {
             <TableForCols 
                 rows={rows} 
                 onDelete={deleteRow}
+                setRows={setRows}
             />
 
             <button 
@@ -43,10 +58,7 @@ const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable }) => {
 
                     <button 
                         style={{ width: '30%' }}
-                        onClick={() => { 
-                            onChangeIsCreateNewTable(false);
-                            onChangeHeader('Окно редактирования')
-                        }}
+                        onClick={handleCancel}
                     >Отмена</button>
             </div>
         </div>

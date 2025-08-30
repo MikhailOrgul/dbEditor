@@ -1,6 +1,19 @@
 import CreateTableForm from "./createTable"
 
-const TablesEditor = ({ header, onChangeHeader, isCreateNewTable, onChangeIsCreateNewTable }) => {
+const TablesEditor = (
+    {
+        header, 
+        onChangeHeader, 
+        isCreateNewTable, 
+        onChangeIsCreateNewTable,
+        pickedTable,
+        tableColumns,
+        isEditTable, 
+        setIsEditTable,
+        setTableColumns,
+    
+    }) => {
+    
     return(
         <div 
             style={{ 
@@ -13,7 +26,15 @@ const TablesEditor = ({ header, onChangeHeader, isCreateNewTable, onChangeIsCrea
             <h1 style={{}}>
                 {header}
             </h1>
-            { isCreateNewTable && <CreateTableForm onChangeHeader={onChangeHeader} onChangeIsCreateNewTable={onChangeIsCreateNewTable}/>}
+            { (isCreateNewTable || isEditTable) &&  
+                <CreateTableForm
+                    setTableColumns={setTableColumns} 
+                    setIsEditTable={setIsEditTable}
+                    onChangeHeader={onChangeHeader} 
+                    onChangeIsCreateNewTable={onChangeIsCreateNewTable} 
+                    tableColumns={tableColumns} 
+                />
+            }
         </div>
     )
 }

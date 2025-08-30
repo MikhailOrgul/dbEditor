@@ -26,6 +26,7 @@ ipcMain.handle('getTables', controllers.handleGetAllTables)
 ipcMain.handle('createTable', controllers.handleCreateTable)
 ipcMain.handle('alterTable', controllers.handleAlterTable)
 ipcMain.handle('dropTable', controllers.handlerDropTable)
+ipcMain.handle('getDataFromTable', controllers.handlerGetTableValues)
 
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin'){

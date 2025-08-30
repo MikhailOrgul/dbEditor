@@ -1,7 +1,9 @@
 const { 
     createTable, 
     getAllTables, 
-    alterTableColumns, 
+    alterTableColumns,
+    getTableValues,
+
 } = require('../model/tables')
 
 //Получить список таблиц в БД
@@ -33,13 +35,19 @@ const handleAlterTable = async (tableName, colName, dataType, method) => {
 }
 
 //Удаление таблицы
-const handlerDropTable = async (tableName) => {
-    return await dropTable(tableName)
+const handlerDropTable = async (_event, tableName) => {
+    return await dropTable(_event, tableName)
+}
+
+const handlerGetTableValues = async (_event, tableName) => {
+    return await getTableValues(tableName)
 }
 
 module.exports = { 
     handleCreateTable, 
     handleGetAllTables,
     handleAlterTable, 
-    handlerDropTable
+    handlerDropTable,
+    handlerGetTableValues,
+    
 }
