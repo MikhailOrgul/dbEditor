@@ -65,8 +65,17 @@ const getTableValues = async (tableName) => {
     }
 }
 
+//Удалить таблицу
+const dropTable = async (tableName) => {
+    const query = `DROP TABLE IF EXISTS "${tableName}" CASCADE;`
+    console.log('[dropTable]', query)
+    const result = await pool.query(query)
+    return result.rows      
+}
+
 //Запись данных с клиента
 const saveTable = async (dataObj) => {
+    console.log(dataObj)
     const generateQuerySQL = async () => {
         const { tableName, columns } = dataObj
         let columnsSQL = columns.map(column => {
@@ -82,6 +91,7 @@ const saveTable = async (dataObj) => {
         if (columnsPK.length) columnsSQL.push(`PRIMARY KEY (${columnsPK.join(', ')})`)
 
         const query = `CREATE TABLE "${tableName}" \n(${columnsSQL});`
+        console.log('[generateQuerySQL] ', query)
         return query
     }   
     
@@ -102,4 +112,5 @@ module.exports ={
     getAllTables, 
     saveTable,
     getTableValues,
+    dropTable
 }

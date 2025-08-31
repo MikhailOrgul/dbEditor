@@ -1,8 +1,20 @@
 import { useState, useEffect } from "react"
 import TableForCols from "./tableForCreating"
 
-const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable, tableColumns, setIsEditTable, setTableColumns, setPickedTable, setRefreshTableList }) => {
-    const [rows, setRows] = useState([{ id: 1, column_name: "", data_type: "", is_nullable: false, primary_key: false, unique: false}])
+const CreateTableForm = (
+    { 
+        onChangeHeader, 
+        onChangeIsCreateNewTable, 
+        tableColumns, 
+        setIsEditTable, 
+        setTableColumns, 
+        setPickedTable, 
+        setRefreshTableList, 
+        pickedTable, 
+        rows, 
+        setRows 
+    }) => {
+    
     const [tableName, setTableName] = useState('')
 
     useEffect(() => {
@@ -32,19 +44,22 @@ const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable, tableColumn
 
     const handleSaveTable = () => {      
         window.api.getDataFromClientForm(tableName, rows)
-            .then()
+            .then(() => {
+                setRefreshTableList(prev => !prev)
+                setPickedTable(null)
+                onChangeIsCreateNewTable(false)
+                setIsEditTable(false)
+                onChangeHeader('Окно редактирования')        
+            })
             .catch(err => console.error('[ERROR]', err.message))
-        setRefreshTableList(prev => !prev)
-        setPickedTable(null)
-        setIsEditTable(false)
-        onChangeHeader('Окно редактирования')
     }
 
     return (
         <div style={{ paddingLeft: '2%', paddingRight: '3%', display: 'flex', flexDirection: "column" }}>
             <input 
+                className="tableNameInput"
                 placeholder="Имя таблицы" 
-                value={tableName}
+                value={pickedTable ? pickedTable.tableName : tableName}
                 onChange={e => setTableName(e.target.value)}
                 style={{ 
                     marginBottom: '1%',

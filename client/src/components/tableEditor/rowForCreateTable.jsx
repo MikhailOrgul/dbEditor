@@ -1,7 +1,15 @@
+import { useEffect } from "react";
+
 const CreateTableRow = ({ onDelete, row, onChange }) => {
     const handleInputChange = (field, value) => {
         onChange(row.id, field, value);
     }
+
+    useEffect(() => {
+        if (!row.data_type) {
+            handleInputChange("data_type", "integer");
+        }
+    }, [row.data_type]);
     
     return(
         <tr>

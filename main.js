@@ -25,6 +25,7 @@ app.whenReady().then(() => {
 ipcMain.handle('getTables', controllers.handleGetAllTables)
 ipcMain.handle('getDataFromTable', controllers.handlerGetTableValues)
 ipcMain.handle('getDataFromClientForm', controllers.handlerSaveTable)
+ipcMain.handle('deleteTable', controllers.handleDeleteTable)
 
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin'){

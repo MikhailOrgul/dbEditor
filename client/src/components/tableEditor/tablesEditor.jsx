@@ -8,10 +8,13 @@ const TablesEditor = (
         onChangeIsCreateNewTable,
         setPickedTable,
         tableColumns,
+        pickedTable,
         isEditTable, 
         setIsEditTable,
         setTableColumns,
         setRefreshTableList,
+        rows,
+        setRows
     
     }) => {
     
@@ -29,10 +32,13 @@ const TablesEditor = (
             </h1>
             { (isCreateNewTable || isEditTable) &&  
                 <CreateTableForm
+                    setRows={setRows}
+                    rows={rows}
                     setRefreshTableList={setRefreshTableList}
                     setPickedTable={setPickedTable}
                     setTableColumns={setTableColumns} 
                     setIsEditTable={setIsEditTable}
+                    pickedTable={pickedTable}
                     onChangeHeader={onChangeHeader} 
                     onChangeIsCreateNewTable={onChangeIsCreateNewTable} 
                     tableColumns={tableColumns} 

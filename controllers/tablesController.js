@@ -1,7 +1,8 @@
 const { 
     getAllTables, 
     getTableValues,
-    saveTable
+    saveTable,
+    dropTable
 } = require('../model/tables')
 
 //Получить список таблиц в БД
@@ -14,13 +15,19 @@ const handlerGetTableValues = async (_event, tableName) => {
     return await getTableValues(tableName)
 }
 
+//Сохранить таблицу
 const handlerSaveTable = async (_event, obj) => {
-    console.log('[OBJ CONTROLLER]', obj)
     return await saveTable(obj)
 }
+
+//Удалить таблицу
+const handleDeleteTable = async (_event, tableName) => {
+    return await dropTable(tableName)
+} 
 
 module.exports = { 
     handleGetAllTables,
     handlerGetTableValues,
-    handlerSaveTable
+    handlerSaveTable,
+    handleDeleteTable
 }
