@@ -1,14 +1,14 @@
 import TableItem from '../tableList/tableItem'
 import { useState, useEffect } from 'react'
 
-const TablesList = ({ onChangeHeader, onChangeIsCreateNewTable, setPickedTable, setIsEditTable }) => {
+const TablesList = ({ onChangeHeader, onChangeIsCreateNewTable, setPickedTable, setIsEditTable, refreshTableList }) => {
     const [tables, setTables] = useState([])
     
     useEffect(() => {
         window.api.getTables()
             .then(data => setTables(data))
             .catch(err => console.log('[ERROR] ошибка получения таблиц', err.message))
-    }, [])
+    }, [refreshTableList])
 
     return(
         <div style={{ textAlign: 'center', width: '20%' }}>

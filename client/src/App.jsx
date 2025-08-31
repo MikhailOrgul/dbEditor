@@ -9,6 +9,7 @@ function App() {
     const [isEditTable, setIsEditTable] = useState(false)
     const [pickedTable, setPickedTable] = useState(null)
     const [tableColumns, setTableColumns] = useState()
+    const [refreshTableList, setRefreshTableList] = useState(false)
 
     useEffect(() => {
         if (!pickedTable) return;
@@ -18,11 +19,12 @@ function App() {
                 setTableColumns(data)
             })
             .catch(err => console.error('[ERROR] ошибка получения значений таблиц', err.message))
-        }, [pickedTable])
+    }, [pickedTable])
     
     return (
         <div className='main'>
             <TablesList 
+                refreshTableList={refreshTableList}
                 onChangeHeader={setTableEditorHeader} 
                 onChangeIsCreateNewTable={setIsCreateNewTable}
                 setIsEditTable={setIsEditTable}
@@ -30,6 +32,7 @@ function App() {
             />
             
             <TablesEditor
+                setRefreshTableList={setRefreshTableList} 
                 setPickedTable={setPickedTable}
                 setTableColumns={setTableColumns} 
                 header={tableEditorHeader} 
@@ -38,7 +41,6 @@ function App() {
                 setIsEditTable={setIsEditTable}
                 isEditTable={isEditTable} 
                 onChangeIsCreateNewTable={setIsCreateNewTable}
-                pickedTable={pickedTable}
                 tableColumns={tableColumns}
             />
         </div>

@@ -65,6 +65,7 @@ const getTableValues = async (tableName) => {
     }
 }
 
+//Запись данных с клиента
 const saveTable = async (dataObj) => {
     const generateQuerySQL = async () => {
         const { tableName, columns } = dataObj
@@ -83,12 +84,9 @@ const saveTable = async (dataObj) => {
         const query = `CREATE TABLE "${tableName}" \n(${columnsSQL});`
         return query
     }   
-
-    generateQuerySQL()
     
     const dropTable = async () => {
         const query = `DROP TABLE IF EXISTS "${dataObj.tableName}" CASCADE;`
-        console.log(query)
         const sqlDrop = await pool.query(query)
         return sqlDrop        
     }

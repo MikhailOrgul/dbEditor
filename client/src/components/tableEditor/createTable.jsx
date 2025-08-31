@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import TableForCols from "./tableForCreating"
 
-const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable, tableColumns, setIsEditTable, setTableColumns, setPickedTable }) => {
+const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable, tableColumns, setIsEditTable, setTableColumns, setPickedTable, setRefreshTableList }) => {
     const [rows, setRows] = useState([{ id: 1, column_name: "", data_type: "", is_nullable: false, primary_key: false, unique: false}])
     const [tableName, setTableName] = useState('')
 
@@ -34,6 +34,10 @@ const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable, tableColumn
         window.api.getDataFromClientForm(tableName, rows)
             .then()
             .catch(err => console.error('[ERROR]', err.message))
+        setRefreshTableList(prev => !prev)
+        setPickedTable(null)
+        setIsEditTable(false)
+        onChangeHeader('Окно редактирования')
     }
 
     return (
@@ -63,7 +67,7 @@ const CreateTableForm = ({ onChangeHeader, onChangeIsCreateNewTable, tableColumn
                 }>
                     <button 
                         style={{ width: '30%' }}
-                        onClick={() => {handleSaveTable; setPickedTable(null)}}
+                        onClick={() => {handleSaveTable()}}
                     >Сохранить таблицу</button>
 
                     <button 
