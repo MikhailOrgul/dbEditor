@@ -1,5 +1,6 @@
 import TableItem from '../tableList/tableItem'
 import { useState, useEffect } from 'react'
+import SettingsButton from '../settings/settingsButton'
 
 const TablesList = (
     { 
@@ -18,7 +19,10 @@ const TablesList = (
     useEffect(() => {
         window.api.getTables()
             .then(data => { setTables(data) })
-            .catch(err => console.log('[ERROR] ошибка получения таблиц', err.message))
+            .catch(err => {
+                console.log('[ERROR] ошибка получения таблиц', err.message)
+                toast(`Ошибка в получении столбцов таблицы, ${err.message}`)
+            })
     }, [refreshTableList])
 
     return(
@@ -49,6 +53,7 @@ const TablesList = (
                     marginTop: '2%' 
                 }}
             >Создать новую таблицу</button>
+            <SettingsButton />
         </div>
     )
 }

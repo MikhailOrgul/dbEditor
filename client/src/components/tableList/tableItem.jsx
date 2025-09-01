@@ -1,3 +1,5 @@
+import { toast } from "react-toastify"
+
 const TableItem = (
     { 
         table, 
@@ -5,12 +7,15 @@ const TableItem = (
         header, 
         setIsEditTable, 
         setRefreshTableList,
-    
     }) => {
+
     const handleClickDeleteTable = (table) => {
         window.api.deleteTable(table)
             .then()
-            .catch(err => console.error('[ERROR]', err.message))
+            .catch(err => {
+                console.error('[ERROR]', err.message)
+                toast(`Ошибка\n${err.message}`)
+            })
     }
 
     return (
@@ -19,7 +24,7 @@ const TableItem = (
                 style={{
                     marginLeft:'3%'
                 }}
-                onClick={() => { setIsEditTable(true), setPickedTable({...table, tableName: table.table_name}); header(`Изменение таблицы "${table.table_name}"`)} 
+                onClick={() => { setIsEditTable(true), setPickedTable(table.table_name); header(`Изменение таблицы "${table.table_name}"`)} 
             }>{table.table_name}</li>
             <button 
                 style={{ backgroundColor: 'black', color: 'red', alignSelf: 'stretch', marginRight: '3%', height: '3em'}}

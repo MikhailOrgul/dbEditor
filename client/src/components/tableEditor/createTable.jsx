@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import TableForCols from "./tableForCreating"
+import { toast } from 'react-toastify';
 
 const CreateTableForm = (
     { 
@@ -18,8 +19,16 @@ const CreateTableForm = (
     const [tableName, setTableName] = useState('')
 
     useEffect(() => {
+        if (pickedTable) {
+            setTableName(pickedTable)
+        }
+    }, [pickedTable])
+
+    useEffect(() => {
         if (tableColumns && tableColumns.length > 0) {
             setRows(tableColumns)
+        } else if (tableColumns && tableColumns.length === 0) {
+            setRows([{ id: 1, column_name: "", data_type: "", is_nullable: false, primary_key: false, unique: false }])
         }
     }, [tableColumns])
 
@@ -43,6 +52,7 @@ const CreateTableForm = (
     }
 
     const handleSaveTable = () => {      
+        console.log(tableName, rows)
         window.api.getDataFromClientForm(tableName, rows)
             .then(() => {
                 setRefreshTableList(prev => !prev)
@@ -51,7 +61,10 @@ const CreateTableForm = (
                 setIsEditTable(false)
                 onChangeHeader('Окно редактирования')        
             })
-            .catch(err => console.error('[ERROR]', err.message))
+            .catch(err => {
+                console.error('[ERROR]', err.message)
+                toast(`Ошибка\n${err.message}`)
+            })
     }
 
     return (
@@ -59,7 +72,7 @@ const CreateTableForm = (
             <input 
                 className="tableNameInput"
                 placeholder="Имя таблицы" 
-                value={pickedTable ? pickedTable.tableName : tableName}
+                value={pickedTable ? pickedTable : tableName}
                 onChange={e => setTableName(e.target.value)}
                 style={{ 
                     marginBottom: '1%',

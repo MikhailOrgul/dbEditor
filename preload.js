@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld('versions', {
 contextBridge.exposeInMainWorld('api', {
     getTables: () => ipcRenderer.invoke('getTables'),
     getDataFromTable: (tableName) => ipcRenderer.invoke('getDataFromTable', tableName),
-    getDataFromClientForm: (tableName, columns) => ipcRenderer.invoke('getDataFromClientForm', {tableName, columns}),
-    deleteTable: (tableName) => ipcRenderer.invoke('deleteTable', tableName)
+    getDataFromClientForm: (tableName, columns) => ipcRenderer.invoke('getDataFromClientForm', { tableName, columns }),
+    deleteTable: (tableName) => ipcRenderer.invoke('deleteTable', tableName),
+    updateENV: (settingsObj) => ipcRenderer.invoke('updateENV', settingsObj),
 })

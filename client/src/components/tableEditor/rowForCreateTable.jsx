@@ -19,7 +19,7 @@ const CreateTableRow = ({ onDelete, row, onChange }) => {
             <td>
                 <input 
                     type='text' 
-                    value={row.column_name ?? ""}
+                    value={row.column_name === 'undefined' ? '' : row.column_name}
                     onChange={e => handleInputChange("column_name", e.target.value)}
                 />
             </td>

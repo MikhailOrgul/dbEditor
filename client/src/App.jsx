@@ -2,6 +2,8 @@ import './App.css'
 import { useState, useEffect } from 'react'
 import TablesList from './components/tableList/tablesList'
 import TablesEditor from './components/tableEditor/tablesEditor'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
     const [tableEditorHeader, setTableEditorHeader] = useState('Окно редактирования')
@@ -15,18 +17,15 @@ function App() {
     useEffect(() => {
         if (!pickedTable) return;
 
-        window.api.getDataFromTable(pickedTable.table_name)
+        window.api.getDataFromTable(pickedTable)
             .then(data => {
                 setTableColumns(data)
             })
-            .catch(err => console.error('[ERROR] ошибка получения значений таблиц', err.message))
+            .catch(err => {
+                console.error('[ERROR] ошибка получения значений таблиц', err.message)
+                toast(`Ошибка в получении столбцов таблицы, ${err.message}`)
+            })
     }, [pickedTable])
-
-    const handleCancel =() => {
-        setIsEditTable(false)
-        setRows([])
-        setTableColumns()
-    }
     
     return (
         <div className='main'>
@@ -55,6 +54,7 @@ function App() {
                 onChangeIsCreateNewTable={setIsCreateNewTable}
                 tableColumns={tableColumns}
             />
+            <ToastContainer />
         </div>
     )
 }

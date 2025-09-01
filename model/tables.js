@@ -2,13 +2,19 @@ const pool = require('./db')
 
 //Получить список таблиц в БД
 const getAllTables = async () => { 
-    const query = await pool.query(`
+    const query = `
         SELECT table_name
         FROM information_schema.tables
         WHERE table_schema='public'
         AND table_type='BASE TABLE';
-    `)
-    return query.rows
+    `
+    try {
+        const result = await pool.query(query)
+        return result.rows
+    } catch (err) {
+        console.log(err.message)
+        throw new Error(err.message)
+    }
 }
 
 //Данные о полях таблицы
@@ -62,20 +68,24 @@ const getTableValues = async (tableName) => {
         return result.rows
     } catch (err) {
         console.error('[ERROR] получение данных из таблицы', err)
+        throw new Error(err.message)
     }
 }
 
 //Удалить таблицу
 const dropTable = async (tableName) => {
     const query = `DROP TABLE IF EXISTS "${tableName}" CASCADE;`
-    console.log('[dropTable]', query)
-    const result = await pool.query(query)
-    return result.rows      
+    try{
+        const result = await pool.query(query)
+        return result.rows  
+    } catch (err) {
+        console.log(err.message)
+        throw new Error(err.message)
+    } 
 }
 
 //Запись данных с клиента
 const saveTable = async (dataObj) => {
-    console.log(dataObj)
     const generateQuerySQL = async () => {
         const { tableName, columns } = dataObj
         let columnsSQL = columns.map(column => {
@@ -91,7 +101,6 @@ const saveTable = async (dataObj) => {
         if (columnsPK.length) columnsSQL.push(`PRIMARY KEY (${columnsPK.join(', ')})`)
 
         const query = `CREATE TABLE "${tableName}" \n(${columnsSQL});`
-        console.log('[generateQuerySQL] ', query)
         return query
     }   
     
@@ -105,6 +114,7 @@ const saveTable = async (dataObj) => {
         await pool.query(await generateQuerySQL())
     } catch (err) {
         console.error(err)
+        throw new Error(err.message)
     }
 }
 
